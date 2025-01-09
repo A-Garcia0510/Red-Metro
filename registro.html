@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Sneaker Store</title>
+    <title>Registro - Red Metro</title>
     <link rel="stylesheet" href="CSS/forms.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 </head>
 <body>
     <div class="form-container">
         <form class="form" id="registerForm">
-            <h2>Crear Cuenta</h2>
+            <h2>Únete a Red Metro</h2>
             <div class="form-group">
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" required autocomplete="name">
                 <label for="nombre">Nombre Completo</label>
             </div>
             <div class="form-group">
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" required autocomplete="email">
                 <label for="email">Correo Electrónico</label>
             </div>
             <div class="form-group">
@@ -26,8 +27,13 @@
                 <input type="password" id="confirm-password" name="confirm-password" required>
                 <label for="confirm-password">Confirmar Contraseña</label>
             </div>
-            <button type="submit" class="submit-btn">Registrarse</button>
+            <button type="submit" class="submit-btn">
+                Crear Cuenta
+            </button>
             <p class="form-link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            <p class="form-link">
+                <a href="index.html">← Volver al inicio</a>
+            </p>
         </form>
     </div>
 </body>

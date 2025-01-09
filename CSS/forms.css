@@ -17,7 +17,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -26,8 +26,9 @@ body {
     justify-content: center;
     align-items: center;
     background: 
-        linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(153, 27, 27, 0.1) 100%),
-        linear-gradient(45deg, #f8fafc 0%, #f1f5f9 100%);
+        radial-gradient(circle at top left, rgba(220, 38, 38, 0.15), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(153, 27, 27, 0.15), transparent 40%),
+        linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     background-attachment: fixed;
     position: relative;
     overflow: hidden;
@@ -38,17 +39,22 @@ body::before {
     position: absolute;
     width: 150%;
     height: 150%;
-    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+    background: 
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03) 0px,
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 10px
+        );
     top: -25%;
     left: -25%;
-    opacity: 0.1;
-    animation: pulse 15s infinite;
+    animation: patternMove 15s linear infinite;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+@keyframes patternMove {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-20px, -20px) rotate(1deg); }
 }
 
 /* Contenedor del formulario */
@@ -63,7 +69,7 @@ body::before {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.15),
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
         0 0 0 1px rgba(255, 255, 255, 0.3) inset;
     transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -72,7 +78,7 @@ body::before {
 .form-container:hover {
     transform: translateY(-5px);
     box-shadow: 
-        0 30px 60px -15px rgba(0, 0, 0, 0.2),
+        0 30px 60px -15px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(255, 255, 255, 0.4) inset;
 }
 
@@ -201,7 +207,6 @@ body::before {
     text-align: center;
     font-size: 1rem;
     color: #6b7280;
-    margin-top: 1rem;
 }
 
 .form-link a {
@@ -232,17 +237,6 @@ body::before {
     width: 100%;
 }
 
-/* Efectos de animación para inputs */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-.form-group input:invalid:focus {
-    animation: shake 0.3s ease-in-out;
-}
-
 /* Responsive */
 @media (max-width: 480px) {
     .form-container {
@@ -257,31 +251,4 @@ body::before {
     .form-group input {
         padding: 1rem;
     }
-}
-
-/* Efecto de brillo en el fondo */
-@keyframes gradient-shift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-.form-container::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, 
-        var(--primary-color), 
-        var(--secondary-color), 
-        var(--primary-light),
-        var(--primary-dark)
-    );
-    z-index: -1;
-    border-radius: 1.6rem;
-    background-size: 400% 400%;
-    animation: gradient-shift 15s ease infinite;
-    opacity: 0.1;
 }
