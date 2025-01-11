@@ -86,52 +86,72 @@ $stmt->close();
         });
 
         // Manejar acción de "Editar Perfil"
-        document.getElementById('editarPerfil').addEventListener('click', async () => {
-            const nombre_completo = prompt('Ingresa tu nuevo nombre completo:');
-            const correo = prompt('Ingresa tu nuevo correo electrónico:');
+document.getElementById('editarPerfil').addEventListener('click', async () => {
+    const nombre_completo = prompt('Ingresa tu nuevo nombre completo:');
+    const correo = prompt('Ingresa tu nuevo correo electrónico:');
 
-            if (nombre_completo && correo) {
-                const response = await fetch('acciones_usuario.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        accion: 'editar_perfil',
-                        nombre_completo: nombre_completo,
-                        correo: correo,
-                    }),
-                });
+    // Validación de formato de correo
+    const correoRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!correo || !correoRegex.test(correo)) {
+        alert("Por favor, ingresa un correo electrónico válido.");
+        return;
+    }
 
-                const result = await response.json();
-                alert(result.success || result.error);
-                if (result.success) location.reload();
-            }
-        });
+    // Validación de nombre completo (asegurarse de que no esté vacío)
+    if (!nombre_completo) {
+        alert("El nombre completo no puede estar vacío.");
+        return;
+    }
 
-        // Manejar acción de "Cambiar Contraseña"
-        document.getElementById('cambiarContrasena').addEventListener('click', async () => {
-            const contrasena_actual = prompt('Ingresa tu contraseña actual:');
-            const contrasena_nueva = prompt('Ingresa tu nueva contraseña:');
+    const response = await fetch('acciones_usuario.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            accion: 'editar_perfil',
+            nombre_completo: nombre_completo,
+            correo: correo,
+        }),
+    });
 
-            if (contrasena_actual && contrasena_nueva) {
-                const response = await fetch('acciones_usuario.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: new URLSearchParams({
-                        accion: 'cambiar_contrasena',
-                        contrasena_actual: contrasena_actual,
-                        contrasena_nueva: contrasena_nueva,
-                    }),
-                });
+    const result = await response.json();
+    alert(result.success || result.error);
+    if (result.success) location.reload();
+});
 
-                const result = await response.json();
-                alert(result.success || result.error);
-                if (result.success) location.reload();
-            }
-        });
+// Manejar acción de "Cambiar Contraseña"
+document.getElementById('cambiarContrasena').addEventListener('click', async () => {
+    const contrasena_actual = prompt('Ingresa tu contraseña actual:');
+    const contrasena_nueva = prompt('Ingresa tu nueva contraseña:');
+
+    // Validación de contraseñas (mínimo 6 caracteres)
+    if (!contrasena_actual || !contrasena_nueva) {
+        alert("Ambas contraseñas deben ser ingresadas.");
+        return;
+    }
+    if (contrasena_nueva.length < 6) {
+        alert("La nueva contraseña debe tener al menos 6 caracteres.");
+        return;
+    }
+
+    const response = await fetch('acciones_usuario.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            accion: 'cambiar_contrasena',
+            contrasena_actual: contrasena_actual,
+            contrasena_nueva: contrasena_nueva,
+        }),
+    });
+
+    const result = await response.json();
+    alert(result.success || result.error);
+    if (result.success) location.reload();
+});
+
     </script>
 </body>
 </html>
