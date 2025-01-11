@@ -1,3 +1,11 @@
+<?php
+// Iniciar la sesión
+session_start();
+
+// Verificar si el usuario está logueado
+$isLoggedIn = isset($_SESSION['user_id']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,14 +28,16 @@
                 <li><a href="#">Catálogo</a></li>
                 <li><a href="#">Ofertas</a></li>
                 <li><a href="#">Contacto</a></li>
-                <li><a href="login.html">Inicia Sesion</a></li>
-                <li><a href="registro.html">Registrate</a></li>
+
+                <?php if ($isLoggedIn): ?>
+                    <!-- Opciones para usuarios logueados -->
+                    <li><a href="PHP/dashboard.php">Mi Perfil</a></li>
+                <?php else: ?>
+                    <!-- Opciones para usuarios no logueados -->
+                    <li><a href="login.html">Iniciar Sesión</a></li>
+                    <li><a href="registro.html">Registrarse</a></li>
+                <?php endif; ?>
             </ul>
-            <div class="nav-icons">
-                <span class="icon">🔍</span>
-                <span class="icon">🛍️</span>
-                <span class="menu-icon">☰</span>
-            </div>
         </div>
     </nav>
 
@@ -85,7 +95,6 @@
         </div>
     </section>
     <!-- Productos Destacados -->
-    <!-- Featured Products -->
 <section class="featured-products">
     <div class="container">
         <h2>Productos Destacados</h2>

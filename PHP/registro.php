@@ -11,47 +11,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validar que no haya campos vacíos
     if (empty($nombre) || empty($email) || empty($password) || empty($confirmPassword)) {
-        echo "Por favor, completa todos los campos.";
-        exit;
-    }
-
-    // Validar que las contraseñas coincidan
-    if ($password !== $confirmPassword) {
-        echo "Las contraseñas no coinciden.";
-        exit;
-    }
-
-    // Cifrar la contraseña
-    $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-
-    // Verificar si el correo ya existe
-    $sqlCheck = "SELECT id FROM usuarios WHERE correo = ?";
-    $stmtCheck = $conn->prepare($sqlCheck);
-    $stmtCheck->bind_param("s", $email);
-    $stmtCheck->execute();
-    $resultCheck = $stmtCheck->get_result();
-
-    if ($resultCheck->num_rows > 0) {
-        echo "El correo ya está registrado.";
-        exit;
-    }
-
-    // Insertar el nuevo usuario en la base de datos
-    $sqlInsert = "INSERT INTO usuarios (nombre_completo, correo, contrasena) VALUES (?, ?, ?)";
-    $stmtInsert = $conn->prepare($sqlInsert);
-    $stmtInsert->bind_param("sss", $nombre, $email, $passwordHash);
-
-    if ($stmtInsert->execute()) {
-        echo "Registro exitoso. Ahora puedes iniciar sesión.";
-        header("Location:../login.html");
-        exit;
+        echo '<script>alert("Por favor, completa todos los campos.");</script>';
+        echo '<script>window.location.href = "../registro.html";</script>';
     } else {
-        echo "Error al registrar el usuario: " . $conn->error;
-    }
+        // Validar que las contraseñas coincidan
+        if ($password !== $confirmPassword) {
+            echo '<script>alert("Las contraseñas no coinciden.");</script>';
+            echo '<script>window.location.href = "../registro.html";</script>';
+        } else {
+            // Cifrar la contraseña
+            $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
-    $stmtCheck->close();
-    $stmtInsert->close();
+            // Verificar si el correo ya existe
+            $sqlCheck = "SELECT id FROM usuarios WHERE correo = ?";
+            $stmtCheck = $conn->prepare($sqlCheck);
+            $stmtCheck->bind_param("s", $email);
+            $stmtCheck->execute();
+            $resultCheck = $stmtCheck->get_result();
+
+            if ($resultCheck->num_rows > 0) {
+                echo '<script>alert("El correo ya está registrado.");</script>';
+                echo '<script>window.location.href = "../registro.html";</script>';
+            } else {
+                // Insertar el nuevo usuario en la base de datos
+                $sqlInsert = "INSERT INTO usuarios (nombre_completo, correo, contrasena) VALUES (?, ?, ?)";
+                $stmtInsert = $conn->prepare($sqlInsert);
+                $stmtInsert->bind_param("sss", $nombre, $email, $passwordHash);
+
+                if ($stmtInsert->execute()) {
+                    echo '<script>alert("Registro exitoso. Ahora puedes iniciar sesión.");</script>';
+                    echo '<script>window.location.href = "../registro.html";</script>';
+                } else {
+                    echo '<script>alert("Error al registrar el usuario: ' . $conn->error . '");</script>';
+                    echo '<script>window.location.href = "../registro.html";</script>';
+                }
+
+                $stmtInsert->close();
+            }
+
+            $stmtCheck->close();
+        }
+    }
 } else {
-    echo "Método no permitido.";
+    echo '<script>alert("Método no permitido.");</script>';
+    echo '<script>window.location.href = "../registro.html";</script>';
 }
 ?>

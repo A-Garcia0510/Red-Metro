@@ -71,8 +71,9 @@ $stmt->close();
             </div>
 
             <div class="user-actions">
-                <a href="editar_perfil.php" class="action-btn edit-btn">Editar Perfil</a>
-                <a href="cambiar_contrasena.php" class="action-btn password-btn">Cambiar Contraseña</a>
+                <button id="editarPerfil" class="action-btn edit-btn">Editar Perfil</button>
+                <button id="cambiarContrasena" class="action-btn password-btn">Cambiar Contraseña</button>
+                <a href="../index.php" class="action-btn logout-btn">Pagina Principal</a>
                 <a href="logout.php" class="action-btn logout-btn">Cerrar Sesión</a>
             </div>
         </div>
@@ -82,6 +83,54 @@ $stmt->close();
         // Agregar animación de entrada
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('.dashboard-container').classList.add('loaded');
+        });
+
+        // Manejar acción de "Editar Perfil"
+        document.getElementById('editarPerfil').addEventListener('click', async () => {
+            const nombre_completo = prompt('Ingresa tu nuevo nombre completo:');
+            const correo = prompt('Ingresa tu nuevo correo electrónico:');
+
+            if (nombre_completo && correo) {
+                const response = await fetch('acciones_usuario.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        accion: 'editar_perfil',
+                        nombre_completo: nombre_completo,
+                        correo: correo,
+                    }),
+                });
+
+                const result = await response.json();
+                alert(result.success || result.error);
+                if (result.success) location.reload();
+            }
+        });
+
+        // Manejar acción de "Cambiar Contraseña"
+        document.getElementById('cambiarContrasena').addEventListener('click', async () => {
+            const contrasena_actual = prompt('Ingresa tu contraseña actual:');
+            const contrasena_nueva = prompt('Ingresa tu nueva contraseña:');
+
+            if (contrasena_actual && contrasena_nueva) {
+                const response = await fetch('acciones_usuario.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        accion: 'cambiar_contrasena',
+                        contrasena_actual: contrasena_actual,
+                        contrasena_nueva: contrasena_nueva,
+                    }),
+                });
+
+                const result = await response.json();
+                alert(result.success || result.error);
+                if (result.success) location.reload();
+            }
         });
     </script>
 </body>
