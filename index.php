@@ -25,7 +25,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
             <ul class="nav-links">
                 <li><a href="#">Inicio</a></li>
                 <li><a href="#">Nosotros</a></li>
-                <li><a href="#">Catálogo</a></li>
+                <li><a href="productos.php">Catálogo</a></li>
                 <li><a href="#">Ofertas</a></li>
                 <li><a href="#">Contacto</a></li>
 
